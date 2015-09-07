@@ -119,7 +119,7 @@ module IssuesHelper
         l_hours_short(issue.estimated_hours)
       else
         s = issue.estimated_hours.present? ? l_hours_short(issue.estimated_hours) : ""
-        s << " (#{l(:label_total)}: #{l_hours_short(issue.total_estimated_hours)})"
+        s << " (#{l(issue.is_quota? ? :label_subtask_plural : :label_total)}: #{l_hours_short(issue.total_estimated_hours)})"
         s.html_safe
       end
     end

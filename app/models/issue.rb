@@ -941,7 +941,8 @@ class Issue < ActiveRecord::Base
     if leaf?
       estimated_hours
     else
-      @total_estimated_hours ||= self_and_descendants.sum(:estimated_hours)
+      targets = is_quota? ? descendants : self_and_descendants
+      @total_estimated_hours ||= targets.sum(:estimated_hours)
     end
   end
 
@@ -1194,7 +1195,7 @@ class Issue < ActiveRecord::Base
   end
 
   def done_ratio_derived?
-    !leaf? && Setting.parent_issue_done_ratio == 'derived'
+    !leaf? || is_quota? && Setting.parent_issue_done_ratio == 'derived'
   end
 
   def <=>(issue)
