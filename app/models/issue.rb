@@ -395,6 +395,7 @@ class Issue < ActiveRecord::Base
     'due_date',
     'done_ratio',
     'estimated_hours',
+    'is_quota',
     'custom_field_values',
     'custom_fields',
     'lock_version',
