@@ -395,7 +395,6 @@ class Issue < ActiveRecord::Base
     'due_date',
     'done_ratio',
     'estimated_hours',
-    'is_quota',
     'custom_field_values',
     'custom_fields',
     'lock_version',
@@ -420,6 +419,9 @@ class Issue < ActiveRecord::Base
   safe_attributes 'parent_issue_id',
     :if => lambda {|issue, user| (issue.new_record? || user.allowed_to?(:edit_issues, issue.project)) &&
       user.allowed_to?(:manage_subtasks, issue.project)}
+
+  safe_attributes 'is_quota',
+    :if => lambda {|issue, user| user.allowed_to?(:edit_issues, issue.project) && user.allowed_to?(:log_time, issue.project)}
 
   def safe_attribute_names(user=nil)
     names = super
